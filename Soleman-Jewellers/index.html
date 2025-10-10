@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>সোলেমান জুয়েলার্স – এডভান্সড জুয়েলারি ক্যালকুলেটর</title>
+<!-- Link to the external CSS file -->
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <svg width="0" height="0" style="display:none;">
+    <symbol id="icon-calculator" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="10" x2="16" y2="18"/><line x1="12" y1="10" x2="12" y2="18"/><line x1="8" y1="10" x2="8" y2="18"/></symbol>
+    <symbol id="icon-exchange" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></symbol>
+    <symbol id="icon-sale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></symbol>
+    <symbol id="icon-history" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></symbol>
+    <symbol id="icon-balance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5a5 5 0 0110 0m-5 0V3m0 2v13.5m-3.5-3.5h7m-12 0L8.5 7.5m10 0l-5.5 8.5"/></symbol>
+    <symbol id="icon-recycle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4V2h10v2"/><path d="M10 18a4 4 0 0 0 4-4h4V7H6v7h4a4 4 0 0 0 4 4z"/><path d="M14 14v4"/><path d="M10 14v4"/><path d="M12 18v-4"/></symbol>
+    <symbol id="icon-preview" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="icon-print" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></symbol>
+  </svg>
+
+  <div class="header-bar">
+    <h2><svg class="icon" style="width: 32px; height: 32px;"><use href="#icon-calculator"/></svg> সোলেমান জুয়েলার্স</h2>
+    <div class="info">
+      <div id="todayDate"></div>
+      <div style="margin-top: 5px;">২৪ ক্যারেট: <span id="liveGoldPrice24ct" class="live-price">--</span></div>
+      <div style="margin-top: 5px;">২২ ক্যারেট: <span id="liveGoldPrice22ct" class="live-price">--</span></div>
+      <button class="btn btn-sm" onclick="fetchLivePrice()">লাইভ মূল্য দেখুন</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="tab-buttons">
+      <button class="tab-button active" onclick="openTab('profit')"><svg class="icon"><use href="#icon-sale"/></svg>কেনা-বেচা</button>
+      <button class="tab-button" onclick="openTab('oldToNew')"><svg class="icon"><use href="#icon-recycle"/></svg>পুরাতন এক্সচেঞ্জ</button>
+      <button class="tab-button" onclick="openTab('exchange')"><svg class="icon"><use href="#icon-exchange"/></svg>সোনা এক্সচেঞ্জ</button>
+      <button class="tab-button" onclick="openTab('silverExchange')"><svg class="icon"><use href="#icon-exchange"/></svg>চাঁদি এক্সচেঞ্জ</button>
+      <button class="tab-button" onclick="openTab('anaConverter')"><svg class="icon"><use href="#icon-balance"/></svg>স্বর্ণ ঋণ কনভার্টার</button>
+      <button class="tab-button" onclick="openTab('history')"><svg class="icon"><use href="#icon-history"/></svg>বিল হিস্ট্রি</button>
+    </div>
+
+    <div id="profit" class="tab-pane active">
+      <div class="card">
+        <h3>⭐ কেনা-বেচার হিসাব</h3>
+        <h4>গ্রাহকের তথ্য</h4>
+        <div class="inline-row">
+            <div><label>গ্রাহকের নাম</label><input id="customerName" type="text" placeholder="নাম লিখুন"></div>
+            <div><label>ফোন নম্বর</label><input id="customerPhone" type="tel" placeholder="নম্বর লিখুন"></div>
+        </div>
+        <hr style="margin-top: 24px">
+        <h4>হিসাবের বিবরণ</h4>
+        <div class="inline-row">
+          <div><label>২৪ ক্যারেট সোনার দাম (১০ গ্রাম) – ₹</label><input id="basePrice24ct" type="number" step="100" value="122000" min="0" /></div>
+          <div><label>GST (%)</label><input id="gstPercent" type="number" step="0.1" value="3" min="0" /></div>
+        </div>
+        <div class="inline-row">
+          <div><label>সোনার ওজন (গ্রাম)</label><input id="profitWeight" type="number" step="0.001" value="10" min="0" /></div>
+          <div><label>ওজন (আনা)</label><input id="profitWeightInAna" type="number" step="0.001" placeholder="আনা লিখুন" min="0" /></div>
+          <div><label>মজুরি প্রতি গ্রাম – ₹</label><input id="makingChargePerGram" type="number" step="1" value="500" min="0" /></div>
+        </div>
+        <label>সোনার কোয়ালিটি</label>
+        <select id="goldQuality">
+            <option value="hallmark">হলমার্ক 22K916</option>
+            <option value="kdm">KDM 19K820</option>
+            <option value="bengali">বাংলা সোনা 18K750</option>
+            <option value="desi_bengali">দেশি বাংলা সোনা 15K650</option>
+        </select>
+        <div id="profitOutput" class="results">ফলাফল এখানে আসবে...</div>
+        <div style="margin-top: 16px; display:flex; gap: 12px; flex-wrap: wrap;">
+          <button class="btn" onclick="saveAndPrintBill()">💾 সেভ ও প্রিন্ট করুন</button>
+          <button class="btn btn-alt" onclick="previewBill()">👁️ বিল প্রিভিউ দেখুন</button>
+          <button class="btn btn-alt" onclick="resetProfit()">♻ রিসেট করুন</button>
+        </div>
+      </div>
+    </div>
+    
+    <div id="oldToNew" class="tab-pane">
+        <div class="card">
+            <h3><svg class="icon"><use href="#icon-recycle"/></svg> পুরাতন সোনা দিয়ে নতুন গহনা তৈরি</h3>
+            
+            <h4>গ্রাহকের বিবরণ</h4>
+            <div class="inline-row">
+                <div><label>গ্রাহকের নাম</label><input id="otn_customerName" type="text" placeholder="নাম লিখুন" /></div>
+                <div><label>মোবাইল নম্বর</label><input id="otn_customerMobile" type="tel" placeholder="নম্বর লিখুন" /></div>
+            </div>
+
+            <h4>পুরাতন গহনার বিবরণ</h4>
+            <div class="inline-row">
+                <div><label>পুরানো সোনার ওজন (গ্রাম)</label><input id="otn_OldWeight" type="number" step="0.001" value="10" min="0" /></div>
+                <div><label>পুরানো সোনার ওজন (আনা)</label><input id="otn_OldWeightInAna" type="number" step="0.001" placeholder="আনা লিখুন" min="0" /></div>
+            </div>
+            <label>পুরানো সোনার প্রকার</label>
+            <select id="otn_OldType">
+                <option value="hallmark">হলমার্ক 22K916</option>
+                <option value="bengali" selected>বাংলা সোনা 18K750</option>
+                <option value="kdm">KDM 19K820</option>
+                <option value="desi_bengali">দেশি বাংলা সোনা 15K650</option>
+            </select>
+            
+            <h4>নতুন গহনার বিবরণ</h4>
+            <div class="inline-row">
+                <div><label>নতুন গহনার ওজন (গ্রাম)</label><input id="otn_NewWeight" type="number" step="0.001" value="10" min="0" /></div>
+                <div><label>নতুন গহনার ওজন (আনা)</label><input id="otn_NewWeightInAna" type="number" step="0.001" placeholder="আনা লিখুন" min="0" /></div>
+            </div>
+            <label>নতুন গহনার প্রকার</label>
+            <select id="otn_NewType">
+                <option value="hallmark">হলমার্ক 22K916</option>
+                <option value="kdm">KDM 19K820</option>
+                <option value="bengali">বাংলা সোনা 18K750</option>
+                <option value="desi_bengali">দেশি বাংলা সোনা 15K650</option>
+            </select>
+
+            <hr>
+            <h4>মূল্য ও চার্জ</h4>
+            <div class="inline-row">
+                <div><label>২৪ ক্যারেট সোনার দাম (১০ গ্রাম) – ₹</label><input id="otn_BasePrice24ct" type="number" step="100" value="122000" min="0" /></div>
+                <div><label>মজুরি প্রতি গ্রাম – ₹</label><input id="otn_MakingCharge" type="number" step="1" value="500" min="0" /></div>
+                <div><label>GST (%)</label><input id="otn_GstPercent" type="number" step="0.1" value="3" min="0" /></div>
+            </div>
+            
+            <div id="otn_oldToNewOutput" class="results">ফলাফল এখানে আসবে...</div>
+
+            <div style="margin-top: 16px; display:flex; gap: 12px; flex-wrap: wrap; justify-content: flex-start;">
+                <button class="btn" onclick="otn_printBill()"><svg class="icon"><use href="#icon-print"/></svg> সেভ ও প্রিন্ট করুন</button>
+                <button class="btn btn-alt" onclick="otn_previewBill()"><svg class="icon"><use href="#icon-preview"/></svg> বিল প্রিভিউ দেখুন</button>
+                <button class="btn btn-alt" onclick="otn_resetOldToNew()">♻ রিসেট করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="exchange" class="tab-pane">
+      <div class="card">
+        <h3>🔄 সোনা এক্সচেঞ্জ</h3>
+        <h4>📦 নতুন গহনা</h4>
+        <div class="inline-row">
+          <div><label>ওজন (গ্রাম)</label><input id="newWeight" type="number" step="0.001" value="0" min="0" /></div>
+          <div><label>ওজন (আনা)</label><input id="newWeightInAna" type="number" step="0.001" placeholder="আনা লিখুন" min="0" /></div>
+          <div><label>দৈনিক দাম (১০g) – ₹</label><input id="newPrice11" type="number" step="0.01" value="122000" min="0" /></div>
+        </div>
+        <label style="margin-top:12px">মজুরি</label>
+        <div class="inline-row">
+          <select id="labourType"><option value="pergram" selected>Per Gram (₹/g)</option><option value="percent">Percent (%)</option><option value="fixed">Fixed (টাকা)</option></select>
+          <input id="labourValue" type="number" step="0.01" value="500" min="0" placeholder="মজুরির পরিমাণ" />
+        </div>
+        <h4>♻ পুরাতন গহনা</h4>
+        <div class="inline-row">
+          <div><label>ওজন (গ্রাম)</label><input id="oldWeight" type="number" step="0.001" value="0" min="0" /></div>
+          <div><label>ওজন (আনা)</label><input id="oldWeightInAna" type="number" step="0.001" placeholder="আনা লিখুন" min="0" /></div>
+          <div><label>দৈনিক দাম (১০g) – ₹</label><input id="oldPrice11" type="number" step="0.01" value="122000" min="0" /></div>
+          <div><label>কাটছাঁট (%)</label><input id="deduct" type="number" step="0.01" value="35" min="0" max="100" /></div>
+        </div>
+        <div style="margin-top: 16px; display: flex; align-items: center; background-color: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1;">
+          <input type="checkbox" id="includeGstExchange" checked style="width: 18px; height: 18px; margin-top: 0; margin-right: 10px;">
+          <label for="includeGstExchange" style="display: inline-block; margin-top: 0; font-weight: 600; cursor: pointer;">GST যোগ করুন</label>
+        </div>
+        <div id="exchangeOutput" class="results">ফলাফল এখানে আসবে...</div>
+        <div style="margin-top: 16px; display:flex; gap: 12px; flex-wrap: wrap;">
+          <button class="btn" onclick="calculateExchange(false)">📊 হিসাব দেখুন</button>
+          <button class="btn btn-alt" onclick="previewExchange()">👁️ এক্সচেঞ্জ প্রিভিউ দেখুন</button>
+          <button class="btn btn-alt" onclick="resetExchange()">♻ রিসেট করুন</button>
+        </div>
+      </div>
+    </div>
+    
+    <div id="silverExchange" class="tab-pane">
+      <div class="card">
+        <h3>🔄 চাঁদি এক্সচেঞ্জ</h3>
+        <h4>📦 নতুন চাঁদি</h4>
+        <div class="inline-row">
+          <div><label>ওজন (গ্রাম)</label><input id="newWeightSilver" type="number" step="0.001" value="0" min="0" /></div>
+          <div><label>ওজন (আনা)</label><input id="newWeightSilverInAna" type="number" step="0.001" placeholder="আনা লিখুন" min="0" /></div>
+          <div><label>দৈনিক দাম (১০g) – ₹</label><input id="newPrice11Silver" type="number" step="0.01" value="1010" min="0" /></div>
+        </div>
+        <label style="margin-top:12px">মজুরি</label>
+        <div class="inline-row">
+          <select id="labourTypeSilver"><option value="pergram">Per Gram (₹/g)</option><option value="percent" selected>Percent (%)</option><option value="fixed">Fixed (টাকা)</option></select>
+          <input id="labourValueSilver" type="number" step="0.01" value="10" min="0" placeholder="মজুরির পরিমাণ" />
+        </div>
+        <h4>♻ পুরাতন চাঁদি</h4>
+        <div class="inline-row">
+          <div><label>ওজন (গ্রাম)</label><input id="oldWeightSilver" type="number" step="0.001" value="0" min="0" /></div>
+          <div><label>ওজন (আনা)</label><input id="oldWeightSilverInAna" type="number" step="0.001" placeholder="আনা লিখুন" min="0" /></div>
+          <div><label>দৈনিক দাম (১০g) – ₹</label><input id="oldPrice11Silver" type="number" step="0.01" value="1010" min="0" /></div>
+          <div><label>কাটছাঁট (%)</label><input id="deductSilver" type="number" step="0.01" value="35" min="0" max="100" /></div>
+        </div>
+        <div style="margin-top: 16px; display: flex; align-items: center; background-color: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1;">
+          <input type="checkbox" id="includeGstExchangeSilver" checked style="width: 18px; height: 18px; margin-top: 0; margin-right: 10px;">
+          <label for="includeGstExchangeSilver" style="display: inline-block; margin-top: 0; font-weight: 600; cursor: pointer;">GST যোগ করুন</label>
+        </div>
+        <div id="exchangeOutputSilver" class="results">ফলাফল এখানে আসবে...</div>
+        <div style="margin-top: 16px; display:flex; gap: 12px; flex-wrap: wrap;">
+          <button class="btn" onclick="calculateSilverExchange(false)">📊 হিসাব দেখুন</button>
+          <button class="btn btn-alt" onclick="previewSilverExchange()">👁️ এক্সচেঞ্জ প্রিভিউ দেখুন</button>
+          <button class="btn btn-alt" onclick="resetSilverExchange()">♻ রিসেট করুন</button>
+        </div>
+      </div>
+    </div>
+    
+    <div id="anaConverter" class="tab-pane">
+      <div class="card">
+        <h3>⚖️ আনা থেকে গ্রাম কনভার্টার ও মূল্য হিসাব</h3>
+        <div class="inline-row">
+          <div><label>ওজন (আনা)</label><input id="anaInput" type="number" step="0.001" placeholder="আনা লিখুন" min="0" /></div>
+          <div><label>ওজন (গ্রাম)</label><input id="gramInput" type="number" step="0.001" placeholder="গ্রাম লিখুন" min="0" /></div>
+        </div>
+        <hr>
+        <h4>মূল্যের হিসাব</h4>
+        <div class="inline-row">
+            <div>
+                <label>সোনার দাম (২৪ ক্যারেট প্রতি ১০ গ্রাম)</label>
+                <input id="anaPricePer10g" type="number" step="100" value="49000" min="0" />
+            </div>
+             <div>
+                <label>সোনার কোয়ালিটি</label>
+                <select id="anaGoldQuality">
+                    <option value="24ct">২৪ ক্যারেট</option>
+                    <option value="hallmark" selected>হলমার্ক 22K916</option>
+                    <option value="kdm">KDM 19K820</option>
+                    <option value="bengali">বাংলা সোনা 18K750</option>
+                    <option value="desi_bengali">দেশি বাংলা সোনা 15K650</option>
+                </select>
+            </div>
+        </div>
+        <div id="anaResult" class="results">ফলাফল এখানে আসবে...</div>
+         <div style="margin-top: 16px; display:flex; gap: 12px; flex-wrap: wrap;">
+             <button class="btn btn-alt" onclick="resetAnaConverter()">♻ রিসেট করুন</button>
+         </div>
+      </div>
+    </div>
+
+    <div id="history" class="tab-pane">
+        <div class="card">
+            <h3>📜 সেভ করা বিলের তালিকা</h3>
+            <div id="billHistoryContainer" class="bill-history-list">
+                <!-- Bill history will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+  </div>
+
+  <footer class="site-footer">
+    <p><strong>সোলেমান জুয়েলার্স</strong></p>
+    <p>ঠিকানা: ভাদুরিয়াপাড়া বাজার | মোবাইল: 8967575884</p>
+    <p>GSTIN: 19BMZPR4273E1Z9 | BIS Hallmark: HM/C-5191720314</p>
+  </footer>
+
+  <div id="billDetailsModal" class="modal-overlay">
+    <div class="modal-content">
+        <button id="modalCloseBtn" class="modal-close">&times;</button>
+        <h3 id="modalTitle" style="margin-top:0; border-color: #eee;">বিলের বিস্তারিত বিবরণ</h3>
+        <div id="modalBody"></div>
+    </div>
+  </div>
+  
+  <div class="modal-overlay" id="otn_bill-preview-modal">
+    <div class="modal-content">
+      <button class="modal-close-btn" onclick="otn_closeModal()">&times;</button>
+      <div id="otn_bill-preview-content"></div>
+    </div>
+  </div>
+
+  <!-- Link to the external JavaScript file -->
+  <script src="script.js"></script>
+</body>
+</html>
