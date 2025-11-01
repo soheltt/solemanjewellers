@@ -1,2 +1,0 @@
-# solemanjewellers
-soleman jewellers calculator
